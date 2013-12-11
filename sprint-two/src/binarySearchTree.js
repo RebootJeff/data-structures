@@ -10,7 +10,6 @@ var makeBinarySearchTree = function(val){
 var bstMethods = {
   insert: function(val){
     var newNode = makeBinarySearchTree(val);
-
     if(this.value === val){
       return;  // do nothing
     } else if(this.value < val){
