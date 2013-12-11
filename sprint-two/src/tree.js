@@ -16,16 +16,13 @@ treeMethods.addChild = function(childTree){
 treeMethods.contains = function(val){
   var result = false;
 
-  var recursiveCall = function(tree){
-    if(tree.value === val){
-      result = true;
-    } else {
-      _.each(tree.children, function(child, index, children){
-        recursiveCall(child);
-      });
-    }
-  };
+  if(this.value === val){
+    result = true;
+  } else {
+    _.each(this.children, function(child, index, children){
+      result = result || child.contains(val);
+    });
+  }
 
-  recursiveCall(this);
   return result;
 };
