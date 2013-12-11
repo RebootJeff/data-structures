@@ -26,4 +26,5 @@ describe("binarySearchTree", function() {
     expect(binarySearchTree.left.value).toEqual(3);
     expect(binarySearchTree.right.left.value).toEqual(6);
   });
+
 });

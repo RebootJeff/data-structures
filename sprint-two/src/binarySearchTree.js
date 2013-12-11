@@ -45,5 +45,16 @@ var bstMethods = {
     callback(this.value);
     this.left && this.left.depthFirstLog(callback);
     this.right && this.right.depthFirstLog(callback);
+  },
+
+  breadthFirstLog: function(callback){
+    var queue = [this];
+
+    while(queue.length > 0){
+      var node = queue.shift();
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+      callback(node.value);
+    }
   }
 };
