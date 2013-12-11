@@ -9,7 +9,23 @@ var makeBinarySearchTree = function(val){
 
 var bstMethods = {
   insert: function(val){
+    var newNode = makeBinarySearchTree(val);
 
+    if(this.value === val){
+      return;  // do nothing
+    } else if(this.value < val){
+      if(this.right){
+        this.right.insert(val);
+      } else {
+        this.right = newNode;
+      }
+    } else {
+      if(this.left){
+        this.left.insert(val);
+      } else {
+        this.left = newNode;
+      }
+    }
   },
 
   contains: function(val){
