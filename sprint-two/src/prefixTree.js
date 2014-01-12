@@ -18,12 +18,12 @@ Trie.prototype.insert = function(key, val, keyIndex){
   } else {
     var child;
     var insertHere = true;
-
     for(var i = 0; i < this.children.length; i++){
       child = this.children[i];
       if(child.branch === key[keyIndex]){
         child.insert(key, val, keyIndex + 1);
         insertHere = false;
+        break;
       }
     }
 
@@ -47,8 +47,25 @@ Trie.prototype.insert = function(key, val, keyIndex){
   }
 };
 
-Trie.prototype.hasKey = function(key){
+Trie.prototype.hasKey = function(key, keyIndex){
 // Return boolean based on weather or not given key is currently stored in the trie.
+  if(this.key === key){
+    return true;
+  }
+
+  var result = false;
+  var child;
+  keyIndex = keyIndex || 0;
+
+  for(var i = 0; i < this.children.length; i++){
+    child = this.children[i];
+    if(child.branch === key[keyIndex]){
+      result = result || child.hasKey(key, keyIndex + 1);
+      break;
+    }
+  }
+
+  return result;
 };
 
 Trie.prototype.retrieveVal = function(key){
