@@ -68,9 +68,24 @@ Trie.prototype.hasKey = function(key, keyIndex){
   return result;
 };
 
-Trie.prototype.retrieveVal = function(key){
+Trie.prototype.retrieveVal = function(key, keyIndex){
 // Return val stored with given key.
+  if(this.key === key){
+    return this.val;
+  }
 
+  keyIndex = keyIndex || 0;
+  var result;
+  // It's worth noting I don't use Underscore `each` or `all` so I can use `break;`.
+  for(var i = 0; i < this.children.length; i++){
+    child = this.children[i];
+    if(child.branch === key[keyIndex]){
+      result = child.retrieveVal(key, keyIndex + 1);
+      break;
+    }
+  }
+
+  return result;
 };
 
 Trie.prototype.keysWithPrefix = function(prefix){
