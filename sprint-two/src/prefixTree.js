@@ -144,12 +144,3 @@ Trie.prototype.removeKey = function(key, keyIndex){
     }
   }
 };
-
-var test = new Trie();
-test.insert('hi', 1);
-test.insert('hill', 2);
-test.insert('hick', 3);
-console.log(test.getKeysWithPrefix('h'));
-console.log(test.getKeysWithPrefix('x'));
-test.removeKey('hi');
-console.log(test.getKeysWithPrefix('h'));
