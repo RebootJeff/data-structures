@@ -1,3 +1,5 @@
+"use strict";
+
 // Prefix trees aka tries aka digital trees aka radix trees.
 var Trie = function(key, val, _branch){
 // Not all nodes will have a val or children.
@@ -75,7 +77,7 @@ Trie.prototype.retrieveVal = function(key, keyIndex){
   }
 
   keyIndex = keyIndex || 0;
-  var result;
+  var result, child;
   // It's worth noting I don't use Underscore `each` or `all` so I can use `break;`.
   for(var i = 0; i < this.children.length; i++){
     child = this.children[i];
@@ -95,35 +97,44 @@ Trie.prototype.getKeysWithPrefix = function(prefix){
 // 2. check if the node has a val; if so, add it to result array
 // 3. find all descendents of the node; add their respective keys if they also have vals
 
-  var result = [];
-  var currentNode = this;
-  var findNodeWithPrefix = function(branchPrefix){
-    if(branchPrefix === prefix){
-      findDescendentKeys(currentNode);
+  var findNodeWithPrefix = function(node, keyIndex){
+  // find node whose key matches the prefix and then find descendent keys
+    if(node.key === prefix){
+      findDescendentKeys(node);
     }
 
-    branchPrefix = branchPrefix || prefix[prefixIndex];
-
-    for(var i = 0; i < this.children.length; i++){
-      child = this.children[i];
-      if(child.branch)
+    keyIndex = keyIndex || 0;
+    var child;
+    for(var i = 0; i < node.children.length; i++){
+      child = node.children[i];
+      if(child.branch === prefix[keyIndex]){
+        findNodeWithPrefix(child, keyIndex + 1);
+      }
+      break;
     }
   };
 
+  var result = [];
   var findDescendentKeys = function(node){
+  // traverse descendent nodes and push any keys that are paired with vals
     if(node.val){
       result.push(node.key);
     }
     for(var i = 0; i < node.children.length; i++){
-      node = node.children[i];
-      findDescendentKeys(node);
+      findDescendentKeys(node.children[i]);
     }
   };
 
-  findNodeWithPrefix();
+  findNodeWithPrefix(this);
   return result;
 };
 
 Trie.prototype.removeKey = function(key){
 
 };
+
+var test = new Trie();
+test.insert('hi', 1);
+test.insert('hill', 2);
+console.log(test.getKeysWithPrefix('h'));
+console.log(test.getKeysWithPrefix('x'));
