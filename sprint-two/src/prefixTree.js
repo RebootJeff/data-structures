@@ -4,8 +4,8 @@ var Trie = function(key, val, _branch){
 // Only root node will have empty key.
   this.children = [];
   this.branch = _branch || null;
-  this.key = key;
-  this.val = val;
+  this.key = key || null;
+  this.val = val || null;
 };
 
 Trie.prototype.insert = function(key, val, keyIndex){
@@ -88,7 +88,42 @@ Trie.prototype.retrieveVal = function(key, keyIndex){
   return result;
 };
 
-Trie.prototype.keysWithPrefix = function(prefix){
+Trie.prototype.getKeysWithPrefix = function(prefix){
 // Return all keys connected to a branch as determined by the given prefix.
+
+// 1. search for node with given prefix
+// 2. check if the node has a val; if so, add it to result array
+// 3. find all descendents of the node; add their respective keys if they also have vals
+
+  var result = [];
+  var currentNode = this;
+  var findNodeWithPrefix = function(branchPrefix){
+    if(branchPrefix === prefix){
+      findDescendentKeys(currentNode);
+    }
+
+    branchPrefix = branchPrefix || prefix[prefixIndex];
+
+    for(var i = 0; i < this.children.length; i++){
+      child = this.children[i];
+      if(child.branch)
+    }
+  };
+
+  var findDescendentKeys = function(node){
+    if(node.val){
+      result.push(node.key);
+    }
+    for(var i = 0; i < node.children.length; i++){
+      node = node.children[i];
+      findDescendentKeys(node);
+    }
+  };
+
+  findNodeWithPrefix();
+  return result;
+};
+
+Trie.prototype.removeKey = function(key){
 
 };
