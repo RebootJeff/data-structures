@@ -1,5 +1,3 @@
-"use strict";
-
 // Prefix trees aka tries aka digital trees aka radix trees.
 var Trie = function(key, val, _branch){
 // Not all nodes will have a val or children.
@@ -129,12 +127,29 @@ Trie.prototype.getKeysWithPrefix = function(prefix){
   return result;
 };
 
-Trie.prototype.removeKey = function(key){
-
+Trie.prototype.removeKey = function(key, keyIndex){
+  keyIndex = keyIndex || 0;
+  var child;
+  for(var i = 0; i < this.children.length; i++){
+    child = this.children[i];
+    if(child.key === key){
+      child.val = null;
+      if(child.children.length === 0){
+        this.children.splice(i, 1);
+      }
+      break;
+    } else if(child.branch === key[keyIndex]){
+      child.removeKey(key, keyIndex + 1);
+      break;
+    }
+  }
 };
 
 var test = new Trie();
 test.insert('hi', 1);
 test.insert('hill', 2);
+test.insert('hick', 3);
 console.log(test.getKeysWithPrefix('h'));
 console.log(test.getKeysWithPrefix('x'));
+test.removeKey('hi');
+console.log(test.getKeysWithPrefix('h'));
